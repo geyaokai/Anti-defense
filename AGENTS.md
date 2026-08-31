@@ -4,6 +4,8 @@
 
 Write the simplest correct implementation for the current requirement. Do not add guards, fallbacks, or error handling for hypothetical scenarios. Handle only cases required by the current contract or demonstrated by existing behavior.
 
+Errors are useful feedback. Accept clear failures when the contract is violated; use the observed error, traceback, or failing test to improve the producer or contract. Do not preemptively complicate code to prevent errors that have not been demonstrated.
+
 ## Scope and change discipline
 
 - Apply these rules to all new code.
@@ -19,6 +21,7 @@ Write the simplest correct implementation for the current requirement. Do not ad
 - Access required data as required (`payload["id"]`, not `payload.get("id")`).
 - Do not silently replace missing or invalid state with `None`, `false`, empty collections, or arbitrary defaults.
 - Prefer fixing the producer of invalid state over guarding every consumer.
+- Let violated internal contracts fail loudly enough to be diagnosed.
 
 ## Validate at boundaries
 
@@ -30,6 +33,7 @@ Validate genuinely untrusted data at user, network, API, CLI, environment, confi
 - Avoid broad `except Exception` / `catch (Exception)`, swallowed errors, and catch-and-return-default patterns.
 - Add retries, compatibility paths, and fallback chains only for a concrete supported requirement.
 - Let unexpected programming errors reach the appropriate error boundary.
+- Do not optimize for uninterrupted execution when doing so hides the cause of failure.
 
 ## Before adding complexity
 
@@ -45,4 +49,3 @@ If there is no concrete answer, do not add it.
 - Test real behavior and demonstrated edge cases; keep assertions precise.
 - Do not weaken tests or add hypothetical cases to justify defensive code.
 - Run the narrowest relevant checks, then review the diff for accidental complexity.
-
